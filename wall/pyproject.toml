@@ -1,0 +1,28 @@
+[project]
+name = "ptl"
+version = "0.1.0"
+description = "Permissions That Learn: the Wall (fixed, user-approved limits for AI agent tool calls)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2.5", "pyyaml>=6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "hypothesis>=6", "ruff>=0.5"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ptl"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]  # line length is a style choice, not a defect

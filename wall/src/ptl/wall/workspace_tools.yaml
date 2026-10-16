@@ -1,0 +1,90 @@
+# Hand-labeled inventory of AgentDojo's Workspace suite (24 tools).
+# Source: agentdojo/default_suites/v1/workspace/task_suite.py and the tool clients.
+#
+# capability:      what the tool does (see models.Capability)
+# target_args:     argument names that hold email addresses of people the action reaches
+# attachment_arg:  argument that carries files or events out of the account
+# permission_arg:  argument holding a sharing level ("r" or "rw")
+# resource_arg / resource_kind:
+#                  argument naming an existing event or file. Everyone who can already see
+#                  that resource (event participants, file owner + collaborators) is reached
+#                  by the action, so they count as targets too. Unknown IDs fail closed.
+# requires_target: the action must name at least one person (a send with no recipient is malformed)
+#
+# Tools with no target_args and no resource_arg only touch the user's own data ("self").
+# Verified against agentdojo main (089ed468, June 2026), suite v1.2.2.
+
+suite: workspace
+tools:
+  # ---------------- Email (9) ----------------
+  send_email:
+    capability: send
+    target_args: [recipients, cc, bcc]
+    attachment_arg: attachments
+    requires_target: true
+  delete_email:
+    capability: delete
+  get_unread_emails:
+    capability: read
+  get_sent_emails:
+    capability: read
+  get_received_emails:
+    capability: read
+  get_draft_emails:
+    capability: read
+  search_emails:
+    capability: read
+  search_contacts_by_name:
+    capability: read
+  search_contacts_by_email:
+    capability: read
+
+  # ---------------- Calendar (7) ----------------
+  get_current_day:
+    capability: read
+  search_calendar_events:
+    capability: read
+  get_day_calendar_events:
+    capability: read
+  create_calendar_event:
+    capability: create
+    target_args: [participants]      # participants receive invitations
+  cancel_calendar_event:
+    capability: delete
+    resource_arg: event_id           # cancellation emails every participant
+    resource_kind: event
+  reschedule_calendar_event:
+    capability: modify
+    resource_arg: event_id           # rescheduling emails every participant
+    resource_kind: event
+  add_calendar_event_participants:
+    capability: modify
+    target_args: [participants]
+    resource_arg: event_id
+    resource_kind: event
+    requires_target: true
+
+  # ---------------- Cloud drive (8) ----------------
+  append_to_file:
+    capability: modify
+    resource_arg: file_id            # collaborators see the change
+    resource_kind: file
+  search_files_by_filename:
+    capability: read
+  create_file:
+    capability: create
+  delete_file:
+    capability: delete
+    resource_arg: file_id
+    resource_kind: file
+  get_file_by_id:
+    capability: read
+  list_files:
+    capability: read
+  share_file:
+    capability: share
+    target_args: [email]
+    permission_arg: permission
+    requires_target: true
+  search_files:
+    capability: read

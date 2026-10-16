@@ -1,0 +1,24 @@
+# Labels for the 8 mock tools in the gatekeeper contract v0.1 (feature/laya-gatekeeper,
+# data/gatekeeper_contract.md). Test-only: real runs use workspace_tools.yaml (AgentDojo names).
+suite: gatekeeper-mock-v0.1
+tools:
+  email.list:
+    capability: read
+  email.create_draft:
+    capability: create          # a draft reaches nobody until it is sent
+  email.send:
+    capability: send
+    target_args: [to]
+    attachment_arg: attachment_ids
+    requires_target: true
+  calendar.list:
+    capability: read
+  calendar.create:
+    capability: create
+    target_args: [attendees]
+  calendar.update:
+    capability: modify          # the mock contract has no event participants to snapshot
+  calendar.delete:
+    capability: delete
+  files.read:
+    capability: read
